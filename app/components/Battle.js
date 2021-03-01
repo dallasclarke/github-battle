@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 
 import Results from "./Results";
 
-import { FaUserFriends, FaFighterJet, FaTrophy, FaTimesCircle } from "react-icons/fa";
+import {
+  FaUserFriends,
+  FaFighterJet,
+  FaTrophy,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 function Instructions() {
   return (
@@ -118,31 +123,43 @@ PlayerPreview.propTypes = {
 
 export default class Battle extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       playerOne: null,
       playerTwo: null,
       battle: false,
-    }
+    };
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleReset = this.handleReset.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
   handleSubmit(id, player) {
     this.setState({
-      [id]: player
-    })
+      [id]: player,
+    });
   }
   handleReset(id) {
     this.setState({
-      [id]: null
-    })
+      [id]: null,
+    });
   }
   render() {
-    const { playerOne, playerTwo, battle } = this.state
+    const { playerOne, playerTwo, battle } = this.state;
 
     if (battle === true) {
-      return <Results playerOne={playerOne} playerTwo={playerTwo} />
+      return (
+        <Results
+          playerOne={playerOne}
+          playerTwo={playerTwo}
+          onReset={() =>
+            this.setState({
+              playerOne: null,
+              playerTwo: null,
+              battle: false,
+            })
+          }
+        />
+      );
     }
 
     return (
@@ -176,16 +193,16 @@ export default class Battle extends React.Component {
               />
             )}
           </div>
-              {playerOne && playerTwo && (
-                <button className="btn dark-btn btn-space" onClick={() => this.setState({battle: true})}>
-                  Battle
-                </button>
-              )}
-
-
+          {playerOne && playerTwo && (
+            <button
+              className="btn dark-btn btn-space"
+              onClick={() => this.setState({ battle: true })}
+            >
+              Battle
+            </button>
+          )}
         </div>
       </React.Fragment>
     );
   }
 }
-
