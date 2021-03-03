@@ -8,10 +8,10 @@ import {
   FaCode,
   FaUser,
 } from "react-icons/fa";
-
 import Card from "./Card";
 import PropTypes from "prop-types";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 function ProfileList({ profile }) {
   return (
@@ -22,14 +22,18 @@ function ProfileList({ profile }) {
       </li>
       {profile.location && (
         <li>
-          <FaCompass color="rgb(144, 115, 255)" size={22} />
-          {profile.location}
+          <Tooltip text="User's location">
+            <FaCompass color="rgb(144, 115, 255)" size={22} />
+            {profile.location}
+          </Tooltip>
         </li>
       )}
       {profile.company && (
         <li>
-          <FaBriefcase color="#795548" size={22} />
-          {profile.company}
+          <Tooltip text="User's company">
+            <FaBriefcase color="#795548" size={22} />
+            {profile.company}
+          </Tooltip>
         </li>
       )}
       <li>
@@ -43,6 +47,7 @@ function ProfileList({ profile }) {
     </ul>
   );
 }
+
 ProfileList.propTypes = {
   profile: PropTypes.object.isRequired,
 };
@@ -81,7 +86,7 @@ export default class Results extends React.Component {
     const { winner, loser, error, loading } = this.state;
 
     if (loading === true) {
-      return <Loading text="Battling" />
+      return <Loading text="Battling" />;
     }
 
     if (error) {
@@ -89,7 +94,7 @@ export default class Results extends React.Component {
     }
 
     return (
-      <>
+      <React.Fragment>
         <div className="grid space-around container-sm">
           <Card
             header={winner.score === loser.score ? "Tie" : "Winner"}
@@ -110,10 +115,10 @@ export default class Results extends React.Component {
             <ProfileList profile={loser.profile} />
           </Card>
         </div>
-        <button className="btn dark-btn btn-space" onClick={this.props.onReset}>
+        <button onClick={this.props.onReset} className="btn dark-btn btn-space">
           Reset
         </button>
-      </>
+      </React.Fragment>
     );
   }
 }
@@ -123,8 +128,3 @@ Results.propTypes = {
   playerTwo: PropTypes.string.isRequired,
   onReset: PropTypes.func.isRequired,
 };
-
-Loading.defaultProps = {
-  text: "Loading",
-  speed: 300
-}
